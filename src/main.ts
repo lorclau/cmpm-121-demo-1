@@ -35,18 +35,30 @@ button.style.cssText = `
 `;
 
 // Create a new div element to display the counter
-const counterDiv = document.createElement('div');
+const counterDiv = document.createElement("div");
 counterDiv.textContent = `${counter} waffles`;
-counterDiv.style.marginTop = '10px';
-counterDiv.style.fontSize = '18px';
-counterDiv.style.textAlign = 'center'; // Center text in div
-counterDiv.style.margin = '0 auto'; // Center the counter div
+counterDiv.style.marginTop = "10px";
+counterDiv.style.fontSize = "18px";
+counterDiv.style.textAlign = "center"; // Center text in div
+counterDiv.style.margin = "0 auto"; // Center the counter div
 
 // Add an event listener to the button
-button.addEventListener('click', () => {
-    counter++; // Increase the counter by 1
-    counterDiv.textContent = `${counter} waffles`; // Update the display
+button.addEventListener("click", () => {
+  counter++; // Increase the counter by 1
+  counterDiv.textContent = `${counter} waffles`; // Update the display
 });
+
+// Set up automatic increment clicking
+const incrementCounter = () => {
+  counter++; // Increase the counter by 1
+  counterDiv.textContent = `${counter} waffles`; // Update the display
+};
+
+// Add an event listener to the button
+button.addEventListener('click', incrementCounter);
+
+// Set up an interval to increment the counter every second
+setInterval(incrementCounter, 1000); // 1000 milliseconds = 1 second
 
 // Append
 app.append(button);
