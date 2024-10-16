@@ -9,13 +9,16 @@ const header = document.createElement("h1");
 header.innerHTML = gameName;
 app.append(header);
 
-//initialize counter
+// Initialize counter
 let counter: number = 0;
 
-//initialize time stamp
+// Initialize time stamp
 let lastTimestamp: number = 0;
 
-//add button
+// Initialize growth rate
+let growthRate: number = 0;
+
+// Add button
 const button = document.createElement("button");
 
 button.textContent = "🧇";
@@ -51,6 +54,11 @@ button.addEventListener("click", () => {
   counterDiv.textContent = `${counter} waffles`; // Update the display
 });
 
+// Create a new button for purchasing upgrades
+const upgradeButton_1 = document.createElement('button');
+upgradeButton_1.textContent = 'Buy Waffle Iron: makes 1 waffle/sec (-10 waffles)';
+upgradeButton_1.disabled = true; // Start disabled
+
 /*
 // Set up automatic increment clicking - with setInterval
 const incrementCounter = () => {
@@ -67,25 +75,41 @@ setInterval(incrementCounter, 1000); // 1000 milliseconds = 1 second
 
 // Increment counter - with requestAnimationFrame
 const incrementCounter = (deltaTime: number) => {
-  // Calculate how much to increment based on the delta time
-  counter += deltaTime; // This will give 1 unit increase per second
+  // Calculate how much to increment based on the delta time and growth rate
+  counter += growthRate * deltaTime; // Increment counter
   counterDiv.textContent = `${Math.floor(counter)} waffles`; // Update the display
+
+  // Enable or disable the upgrade button based on the counter
+  upgradeButton_1.disabled = counter < 10;
 };
 
 // The animation loop
 const animate = (timestamp: number) => {
   if (lastTimestamp !== null) {
-      const deltaTime = (timestamp - lastTimestamp) / 1000; // Convert to seconds
-      incrementCounter(deltaTime); // Update counter based on time passed
+    const deltaTime = (timestamp - lastTimestamp) / 1000; // Convert to seconds
+    incrementCounter(deltaTime); // Update counter based on time passed
   }
   lastTimestamp = timestamp; // Update last timestamp
   requestAnimationFrame(animate); // Request the next frame
 };
 
 // Add an event listener to the button
-button.addEventListener('click', () => {
+button.addEventListener("click", () => {
   counter++; // Increase the counter by 1 on button click
   counterDiv.textContent = `${Math.floor(counter)} waffles`; // Update the display
+
+  // Enable or disable the upgrade button based on the counter
+  upgradeButton_1.disabled = counter < 10;
+});
+
+// Add an event listener to the upgrade button
+upgradeButton_1.addEventListener('click', () => {
+  if (counter >= 10) {
+      counter -= 10; // Deduct 10 units from counter
+      growthRate += 1; // Increment the growth rate by 1
+      counterDiv.textContent = `${Math.floor(counter)} waffles`; // Update the display
+      upgradeButton_1.disabled = counter < 10; // Update button state
+  }
 });
 
 // Start the animation
@@ -94,3 +118,4 @@ requestAnimationFrame(animate);
 // Append
 app.append(button);
 app.append(counterDiv);
+app.append(upgradeButton_1);
