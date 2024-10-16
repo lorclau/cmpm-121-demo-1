@@ -48,30 +48,29 @@ counterDiv.style.fontSize = "18px";
 counterDiv.style.textAlign = "center"; // Center text in div
 counterDiv.style.margin = "0 auto"; // Center the counter div
 
-// Add an event listener to the button
-button.addEventListener("click", () => {
-  counter++; // Increase the counter by 1
-  counterDiv.textContent = `${counter} waffles`; // Update the display
-});
-
 // Create a new button for purchasing upgrades
 const upgradeButton_1 = document.createElement('button');
 upgradeButton_1.textContent = 'Buy Waffle Iron: makes 1 waffle/sec (-10 waffles)';
 upgradeButton_1.disabled = true; // Start disabled
 
-/*
-// Set up automatic increment clicking - with setInterval
-const incrementCounter = () => {
-  counter++; // Increase the counter by 1
-  counterDiv.textContent = `${counter} waffles`; // Update the display
-};
-
 // Add an event listener to the button
-button.addEventListener("click", incrementCounter);
+button.addEventListener("click", () => {
+  counter++; // Increase the counter by 1 on button click
+  counterDiv.textContent = `${Math.floor(counter)} waffles`; // Update the display
 
-// Set up an interval to increment the counter every second
-setInterval(incrementCounter, 1000); // 1000 milliseconds = 1 second
-*/
+  // Enable or disable the upgrade button based on the counter
+  upgradeButton_1.disabled = counter < 10;
+});
+
+// Add an event listener to the upgrade button
+upgradeButton_1.addEventListener('click', () => {
+  if (counter >= 10) {
+      counter -= 10; // Deduct 10 units from counter
+      growthRate += 1; // Increment the growth rate by 1
+      counterDiv.textContent = `${Math.floor(counter)} waffles`; // Update the display
+      upgradeButton_1.disabled = counter < 10; // Update button state
+  }
+});
 
 // Increment counter - with requestAnimationFrame
 const incrementCounter = (deltaTime: number) => {
@@ -92,25 +91,6 @@ const animate = (timestamp: number) => {
   lastTimestamp = timestamp; // Update last timestamp
   requestAnimationFrame(animate); // Request the next frame
 };
-
-// Add an event listener to the button
-button.addEventListener("click", () => {
-  counter++; // Increase the counter by 1 on button click
-  counterDiv.textContent = `${Math.floor(counter)} waffles`; // Update the display
-
-  // Enable or disable the upgrade button based on the counter
-  upgradeButton_1.disabled = counter < 10;
-});
-
-// Add an event listener to the upgrade button
-upgradeButton_1.addEventListener('click', () => {
-  if (counter >= 10) {
-      counter -= 10; // Deduct 10 units from counter
-      growthRate += 1; // Increment the growth rate by 1
-      counterDiv.textContent = `${Math.floor(counter)} waffles`; // Update the display
-      upgradeButton_1.disabled = counter < 10; // Update button state
-  }
-});
 
 // Start the animation
 requestAnimationFrame(animate);
