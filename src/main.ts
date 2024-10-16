@@ -9,10 +9,13 @@ const header = document.createElement("h1");
 header.innerHTML = gameName;
 app.append(header);
 
-//add button
-const button = document.createElement('button');
+//initialize counter
+let counter: number = 0;
 
-button.textContent = '🧇';
+//add button
+const button = document.createElement("button");
+
+button.textContent = "🧇";
 
 button.style.cssText = `
   position: absolute;
@@ -31,9 +34,20 @@ button.style.cssText = `
   align-items: center;
 `;
 
-//button event handling
-//button.onclick = () => alert('Button was clicked!');
+// Create a new div element to display the counter
+const counterDiv = document.createElement('div');
+counterDiv.textContent = `${counter} waffles`;
+counterDiv.style.marginTop = '10px';
+counterDiv.style.fontSize = '18px';
+counterDiv.style.textAlign = 'center'; // Center text in div
+counterDiv.style.margin = '0 auto'; // Center the counter div
 
-document.body.appendChild(button);
+// Add an event listener to the button
+button.addEventListener('click', () => {
+    counter++; // Increase the counter by 1
+    counterDiv.textContent = `${counter} waffles`; // Update the display
+});
 
-
+// Append
+app.append(button);
+app.append(counterDiv);
