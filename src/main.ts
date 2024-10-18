@@ -11,19 +11,29 @@ app.append(header);
 
 //******************************************************
 //initialization
+
 const PRICE_INCREASE_RATE = 1.15;
 
 let counter: number = 0;
 let growthRate: number = 0; // Initialize growth rate to zero
 let lastTimestamp: number = 0; // Initialize timestamp for animation
 
-let upgradeACount: number = 0; // Count for upgrade A
-let upgradeBCount: number = 0; // Count for upgrade B
-let upgradeCCount: number = 0; // Count for upgrade C
+// Define the Item interface
+interface Item {
+  name: string;
+  cost: number;
+  rate: number;
+}
 
-let priceA: number = 10; // Initial price for upgrade A
-let priceB: number = 100; // Initial price for upgrade B
-let priceC: number = 1000; // Initial price for upgrade C
+// Create an array of available items
+const availableItems: Item[] = [
+  { name: "Frozen Waffles", cost: 10, rate: 0.1 },
+  { name: "Waffle Iron", cost: 100, rate: 2 },
+  { name: "Waffle Factory", cost: 1000, rate: 50 },
+];
+
+// Track purchase counts for each item
+const upgradeCounts: number[] = new Array(availableItems.length).fill(0);
 
 //******************************************************
 //create elements
@@ -65,25 +75,19 @@ growthRateDiv.style.fontSize = "18px";
 growthRateDiv.style.textAlign = "center"; // Center text in div
 
 const upgradeCountsDiv = document.createElement("div");
-upgradeCountsDiv.textContent = `Upgrades - Thawing Waffles: ${upgradeACount}, Irons: ${upgradeBCount}, Factories: ${upgradeCCount}`;
+upgradeCountsDiv.textContent = `Upgrades - Thawing Waffles: ${upgradeCounts[0]}, Irons: ${upgradeCounts[1]}, Factories: ${upgradeCounts[2]}`;
 upgradeCountsDiv.style.fontSize = "18px";
 upgradeCountsDiv.style.textAlign = "center"; // Center text in div
 
-// Create buttons for purchasing upgrades
-const upgradeAButton = document.createElement("button");
-upgradeAButton.textContent = `Buy Frozen Waffles (${priceA.toFixed(2)} waffles, +0.1/sec)`;
-upgradeAButton.style.margin = "10px auto";
-upgradeAButton.disabled = true; // Start disabled
-
-const upgradeBButton = document.createElement("button");
-upgradeBButton.textContent = `Buy Waffle Iron (${priceB.toFixed(2)} waffles, +2.0/sec)`;
-upgradeBButton.style.margin = "10px auto";
-upgradeBButton.disabled = true; // Start disabled
-
-const upgradeCButton = document.createElement("button");
-upgradeCButton.textContent = `Buy Waffle Factory (${priceC.toFixed(2)} waffles, +50.0/sec)`;
-upgradeCButton.style.margin = "10px auto";
-upgradeCButton.disabled = true; // Start disabled
+// Create upgrade buttons dynamically based on available items
+const upgradeButtons: HTMLButtonElement[] = availableItems.map((item, index) => {
+  const button = document.createElement('button');
+  button.textContent = `Buy ${item.name} (-${item.cost.toFixed(2)} waffles, +${item.rate.toFixed(1)}/sec)`;
+  button.style.margin = '10px auto';
+  button.disabled = true; // Start disabled
+  button.dataset.index = index.toString(); // Store the index for later use
+  return button;
+});
 
 //******************************************************
 //event handling
@@ -94,53 +98,30 @@ waffleButton.addEventListener("click", () => {
   counterDiv.textContent = `${Math.floor(counter)} waffles`; // Update the display
 
   // Enable or disable the upgrade buttons based on the counter
-  upgradeAButton.disabled = counter < priceA;
-  upgradeBButton.disabled = counter < priceB;
-  upgradeCButton.disabled = counter < priceC;
+  upgradeButtons.forEach((button, index) => {
+    button.disabled = counter < availableItems[index].cost;
+  });
 });
 
 // Add event listeners to the upgrade buttons (A B C)
-upgradeAButton.addEventListener("click", () => {
-  if (counter >= priceA) {
-    counter -= priceA; // Deduct price from counter
-    growthRate += 0.1; // Increment the growth rate
-    upgradeACount++; // Increment upgrade A count
-    priceA *= PRICE_INCREASE_RATE; // Increase the price for the upgrade
-    counterDiv.textContent = `${Math.floor(counter)} waffles`; // Update the display
-    growthRateDiv.textContent = `Growth Rate: ${growthRate.toFixed(1)} waffles/sec`; // Update growth rate display
-    upgradeCountsDiv.textContent = `Upgrades - Thawing Waffles: ${upgradeACount}, Irons: ${upgradeBCount}, Factories: ${upgradeCCount}`; // Update upgrade counts
-    upgradeAButton.textContent = `Buy Frozen Waffles (${priceA.toFixed(2)} waffles, +0.1/sec)`; // Update button text
-  }
-});
-
-upgradeBButton.addEventListener("click", () => {
-  if (counter >= priceB) {
-    counter -= priceB; // Deduct 100 units from counter
-    growthRate += 2.0; // Increment the growth rate
-    upgradeBCount++; // Increment upgrade B count
-    priceB *= PRICE_INCREASE_RATE; // Increase the price for the upgrade
-    counterDiv.textContent = `${Math.floor(counter)} waffles`; // Update the display
-    growthRateDiv.textContent = `Growth Rate: ${growthRate.toFixed(1)} waffles/sec`; // Update growth rate display
-    upgradeCountsDiv.textContent = `Upgrades - Thawing Waffles: ${upgradeACount}, Irons: ${upgradeBCount}, Factories: ${upgradeCCount}`; // Update upgrade counts
-    upgradeBButton.textContent = `Buy Waffle Iron (${priceB.toFixed(2)} waffles, +2.0/sec)`; // Update button text
-  }
-});
-
-upgradeCButton.addEventListener("click", () => {
-  if (counter >= priceC) {
-    counter -= priceC; // Deduct 1000 units from counter
-    growthRate += 50.0; // Increment the growth rate
-    upgradeCCount++; // Increment upgrade C count
-    priceC *= PRICE_INCREASE_RATE; // Increase the price for the upgrade
-    counterDiv.textContent = `${Math.floor(counter)} waffles`; // Update the display
-    growthRateDiv.textContent = `Growth Rate: ${growthRate.toFixed(1)} waffles/sec`; // Update growth rate display
-    upgradeCountsDiv.textContent = `Upgrades - Thawing Waffles: ${upgradeACount}, Irons: ${upgradeBCount}, Factories: ${upgradeCCount}`; // Update upgrade counts
-    upgradeCButton.textContent = `Buy Waffle Factory (${priceC.toFixed(2)} waffles, +50.0/sec)`; // Update button text
-  }
+upgradeButtons.forEach((button, index) => {
+  button.addEventListener('click', () => {
+    const item = availableItems[index];
+    if (counter >= item.cost) {
+      counter -= item.cost; // Deduct the current price from counter
+      growthRate += item.rate; // Increment the growth rate by the item's rate
+      upgradeCounts[index]++; // Increment upgrade count for the item
+      item.cost *= PRICE_INCREASE_RATE; // Increase the cost for the item
+      counterDiv.textContent = `${Math.floor(counter)} waffles`; // Update the display
+      growthRateDiv.textContent = `Growth Rate: ${growthRate.toFixed(1)} waffles/sec`; // Update growth rate display
+      upgradeCountsDiv.textContent = `Upgrades - Thawing Waffles: ${upgradeCounts[0]}, Irons: ${upgradeCounts[1]}, Factories: ${upgradeCounts[2]}`; // Update upgrade counts
+      button.textContent = `Buy ${item.name} (-${item.cost.toFixed(2)} waffles, +${item.rate.toFixed(1)}/sec)`; // Update button text
+    }
+  });
 });
 
 //******************************************************
-// increment handling
+// increment over time
 
 // Increment counter - with requestAnimationFrame
 const incrementCounter = (deltaTime: number) => {
@@ -150,9 +131,9 @@ const incrementCounter = (deltaTime: number) => {
   growthRateDiv.textContent = `Growth Rate: ${growthRate.toFixed(1)} waffles/sec`; // Update growth rate display
 
   // Enable or disable the upgrade buttons based on the counter
-  upgradeAButton.disabled = counter < priceA;
-  upgradeBButton.disabled = counter < priceB;
-  upgradeCButton.disabled = counter < priceC;
+  upgradeButtons.forEach((button, index) => {
+    button.disabled = counter < availableItems[index].cost;
+  });
 };
 
 // The animation loop
@@ -175,6 +156,4 @@ app.append(waffleButton);
 app.append(counterDiv);
 app.append(growthRateDiv);
 app.append(upgradeCountsDiv);
-app.append(upgradeAButton);
-app.append(upgradeBButton);
-app.append(upgradeCButton);
+upgradeButtons.forEach(button => document.body.appendChild(button));
