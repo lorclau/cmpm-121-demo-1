@@ -23,13 +23,16 @@ interface Item {
   name: string;
   cost: number;
   rate: number;
+  description: string; // New field for item description
 }
 
 // Create an array of available items
 const availableItems: Item[] = [
-  { name: "Frozen Waffles", cost: 10, rate: 0.1 },
-  { name: "Waffle Iron", cost: 100, rate: 2 },
-  { name: "Waffle Factory", cost: 1000, rate: 50 },
+  { name: "Frozen Waffles", cost: 10, rate: 0.1, description: "Why make more waffles when you can just buy them? They just need a litte time to thaw." },
+  { name: "Waffle Iron", cost: 100, rate: 2, description: "The best tool to make more warm and delicious waffles!" },
+  { name: "Waffle Factory", cost: 1000, rate: 50, description: "Each factory can produce mutiple batches of waffles with great speed!" },
+  { name: "Waffle Sancturary", cost: 5000, rate: 100, description: "Where waffles go to hide...ready for the taking. You can catch a lot there, just lure them in with some butter!" },
+  { name: "Waffle Island", cost: 10000, rate: 250, description: "The perfect place to enjoy the syrup seas and harvest some waffles." },
 ];
 
 // Track purchase counts for each item
@@ -46,7 +49,7 @@ waffleButton.textContent = "🧇";
 waffleButton.style.cssText = `
   position: absolute;
   top: 20%; 
-  left: 50%;
+  left: 20%;
   transform: translate(-50%, -50%) scale(2);
   width: 100px;         /* Width of the button */
   height: 100px;        /* Height of the button */
@@ -75,19 +78,21 @@ growthRateDiv.style.fontSize = "18px";
 growthRateDiv.style.textAlign = "center"; // Center text in div
 
 const upgradeCountsDiv = document.createElement("div");
-upgradeCountsDiv.textContent = `Upgrades - Thawing Waffles: ${upgradeCounts[0]}, Irons: ${upgradeCounts[1]}, Factories: ${upgradeCounts[2]}`;
+upgradeCountsDiv.textContent = `Upgrades - Thawing Waffles: ${upgradeCounts[0]}, Irons: ${upgradeCounts[1]}, Factories: ${upgradeCounts[2]}, Sanctuaries: ${upgradeCounts[3]}, Islands: ${upgradeCounts[4]}`;
 upgradeCountsDiv.style.fontSize = "18px";
 upgradeCountsDiv.style.textAlign = "center"; // Center text in div
 
 // Create upgrade buttons dynamically based on available items
-const upgradeButtons: HTMLButtonElement[] = availableItems.map((item, index) => {
-  const button = document.createElement('button');
-  button.textContent = `Buy ${item.name} (-${item.cost.toFixed(2)} waffles, +${item.rate.toFixed(1)}/sec)`;
-  button.style.margin = '10px auto';
-  button.disabled = true; // Start disabled
-  button.dataset.index = index.toString(); // Store the index for later use
-  return button;
-});
+const upgradeButtons: HTMLButtonElement[] = availableItems.map(
+  (item, index) => {
+    const button = document.createElement("button");
+    button.textContent = `Buy ${item.name} (-${item.cost.toFixed(2)} waffles, +${item.rate.toFixed(1)}/sec)`;
+    button.style.margin = "10px auto";
+    button.disabled = true; // Start disabled
+    button.dataset.index = index.toString(); // Store the index for later use
+    return button;
+  },
+);
 
 //******************************************************
 //event handling
@@ -105,7 +110,7 @@ waffleButton.addEventListener("click", () => {
 
 // Add event listeners to the upgrade buttons (A B C)
 upgradeButtons.forEach((button, index) => {
-  button.addEventListener('click', () => {
+  button.addEventListener("click", () => {
     const item = availableItems[index];
     if (counter >= item.cost) {
       counter -= item.cost; // Deduct the current price from counter
@@ -114,7 +119,7 @@ upgradeButtons.forEach((button, index) => {
       item.cost *= PRICE_INCREASE_RATE; // Increase the cost for the item
       counterDiv.textContent = `${Math.floor(counter)} waffles`; // Update the display
       growthRateDiv.textContent = `Growth Rate: ${growthRate.toFixed(1)} waffles/sec`; // Update growth rate display
-      upgradeCountsDiv.textContent = `Upgrades - Thawing Waffles: ${upgradeCounts[0]}, Irons: ${upgradeCounts[1]}, Factories: ${upgradeCounts[2]}`; // Update upgrade counts
+      upgradeCountsDiv.textContent = `Upgrades - Thawing Waffles: ${upgradeCounts[0]}, Irons: ${upgradeCounts[1]}, Factories: ${upgradeCounts[2]}, Sanctuaries: ${upgradeCounts[3]}, Islands: ${upgradeCounts[4]}`; // Update upgrade counts
       button.textContent = `Buy ${item.name} (-${item.cost.toFixed(2)} waffles, +${item.rate.toFixed(1)}/sec)`; // Update button text
     }
   });
@@ -156,4 +161,14 @@ app.append(waffleButton);
 app.append(counterDiv);
 app.append(growthRateDiv);
 app.append(upgradeCountsDiv);
-upgradeButtons.forEach(button => document.body.appendChild(button));
+
+upgradeButtons.forEach((button) => app.append(button));
+
+// Display descriptions for each upgrade item
+availableItems.forEach((item) => {
+  const descriptionDiv = document.createElement('div');
+  descriptionDiv.textContent = `${item.name}: ${item.description}`;
+  descriptionDiv.style.fontSize = '12px';
+  descriptionDiv.style.textAlign = 'center';
+  app.append(descriptionDiv);
+});
