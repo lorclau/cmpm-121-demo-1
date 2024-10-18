@@ -65,7 +65,7 @@ growthRateDiv.style.fontSize = "18px";
 growthRateDiv.style.textAlign = "center"; // Center text in div
 
 const upgradeCountsDiv = document.createElement("div");
-upgradeCountsDiv.textContent = `Upgrades - A: ${upgradeACount}, B: ${upgradeBCount}, C: ${upgradeCCount}`;
+upgradeCountsDiv.textContent = `Upgrades - Thawing Waffles: ${upgradeACount}, Irons: ${upgradeBCount}, Factories: ${upgradeCCount}`;
 upgradeCountsDiv.style.fontSize = "18px";
 upgradeCountsDiv.style.textAlign = "center"; // Center text in div
 
@@ -108,7 +108,7 @@ upgradeAButton.addEventListener("click", () => {
     priceA *= PRICE_INCREASE_RATE; // Increase the price for the upgrade
     counterDiv.textContent = `${Math.floor(counter)} waffles`; // Update the display
     growthRateDiv.textContent = `Growth Rate: ${growthRate.toFixed(1)} waffles/sec`; // Update growth rate display
-    upgradeCountsDiv.textContent = `Upgrades - A: ${upgradeACount}, B: ${upgradeBCount}, C: ${upgradeCCount}`; // Update upgrade counts
+    upgradeCountsDiv.textContent = `Upgrades - Thawing Waffles: ${upgradeACount}, Irons: ${upgradeBCount}, Factories: ${upgradeCCount}`; // Update upgrade counts
     upgradeAButton.textContent = `Buy Frozen Waffles (${priceA.toFixed(2)} waffles, +0.1/sec)`; // Update button text
   }
 });
@@ -121,7 +121,7 @@ upgradeBButton.addEventListener("click", () => {
     priceB *= PRICE_INCREASE_RATE; // Increase the price for the upgrade
     counterDiv.textContent = `${Math.floor(counter)} waffles`; // Update the display
     growthRateDiv.textContent = `Growth Rate: ${growthRate.toFixed(1)} waffles/sec`; // Update growth rate display
-    upgradeCountsDiv.textContent = `Upgrades - A: ${upgradeACount}, B: ${upgradeBCount}, C: ${upgradeCCount}`; // Update upgrade counts
+    upgradeCountsDiv.textContent = `Upgrades - Thawing Waffles: ${upgradeACount}, Irons: ${upgradeBCount}, Factories: ${upgradeCCount}`; // Update upgrade counts
     upgradeBButton.textContent = `Buy Waffle Iron (${priceB.toFixed(2)} waffles, +2.0/sec)`; // Update button text
   }
 });
@@ -134,7 +134,7 @@ upgradeCButton.addEventListener("click", () => {
     priceC *= PRICE_INCREASE_RATE; // Increase the price for the upgrade
     counterDiv.textContent = `${Math.floor(counter)} waffles`; // Update the display
     growthRateDiv.textContent = `Growth Rate: ${growthRate.toFixed(1)} waffles/sec`; // Update growth rate display
-    upgradeCountsDiv.textContent = `Upgrades - A: ${upgradeACount}, B: ${upgradeBCount}, C: ${upgradeCCount}`; // Update upgrade counts
+    upgradeCountsDiv.textContent = `Upgrades - Thawing Waffles: ${upgradeACount}, Irons: ${upgradeBCount}, Factories: ${upgradeCCount}`; // Update upgrade counts
     upgradeCButton.textContent = `Buy Waffle Factory (${priceC.toFixed(2)} waffles, +50.0/sec)`; // Update button text
   }
 });
