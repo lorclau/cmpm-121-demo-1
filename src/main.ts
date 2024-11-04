@@ -28,11 +28,40 @@ interface Item {
 
 // Create an array of available items
 const availableItems: Item[] = [
-  { name: "Frozen Waffles", cost: 10, rate: 0.1, description: "Why make more waffles when you can just buy them? They just need a litte time to thaw." },
-  { name: "Waffle Iron", cost: 100, rate: 2, description: "The best tool to make more warm and delicious waffles!" },
-  { name: "Waffle Factory", cost: 1000, rate: 50, description: "Each factory can produce mutiple batches of waffles with great speed!" },
-  { name: "Waffle Sancturary", cost: 5000, rate: 100, description: "Where waffles go to hide...ready for the taking. You can catch a lot there, just lure them in with some butter!" },
-  { name: "Waffle Island", cost: 10000, rate: 250, description: "The perfect place to enjoy the syrup seas and harvest some waffles." },
+  {
+    name: "Frozen Waffles",
+    cost: 10,
+    rate: 0.1,
+    description:
+      "Why make more waffles when you can just buy them? They just need a litte time to thaw.",
+  },
+  {
+    name: "Waffle Iron",
+    cost: 100,
+    rate: 2,
+    description: "The best tool to make more warm and delicious waffles!",
+  },
+  {
+    name: "Waffle Factory",
+    cost: 1000,
+    rate: 50,
+    description:
+      "Each factory can produce mutiple batches of waffles with great speed!",
+  },
+  {
+    name: "Waffle Sancturary",
+    cost: 5000,
+    rate: 100,
+    description:
+      "Where waffles go to hide...ready for the taking. You can catch a lot there, just lure them in with some butter!",
+  },
+  {
+    name: "Waffle Island",
+    cost: 10000,
+    rate: 250,
+    description:
+      "The perfect place to enjoy the syrup seas and harvest some waffles.",
+  },
 ];
 
 // Track purchase counts for each item
@@ -166,9 +195,9 @@ upgradeButtons.forEach((button) => app.append(button));
 
 // Display descriptions for each upgrade item
 availableItems.forEach((item) => {
-  const descriptionDiv = document.createElement('div');
+  const descriptionDiv = document.createElement("div");
   descriptionDiv.textContent = `${item.name}: ${item.description}`;
-  descriptionDiv.style.fontSize = '12px';
-  descriptionDiv.style.textAlign = 'center';
+  descriptionDiv.style.fontSize = "12px";
+  descriptionDiv.style.textAlign = "center";
   app.append(descriptionDiv);
 });
