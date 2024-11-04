@@ -170,13 +170,18 @@ const incrementCounter = (deltaTime: number) => {
   });
 };
 
-// The animation loop
-const animate = (timestamp: number) => {
+const updateDeltaTime = (timestamp: number): number => {
   if (lastTimestamp !== null) {
     const deltaTime = (timestamp - lastTimestamp) / 1000; // Convert to seconds
-    incrementCounter(deltaTime); // Update counter based on time passed
+    lastTimestamp = timestamp; // Update last timestamp
+    return deltaTime;
   }
-  lastTimestamp = timestamp; // Update last timestamp
+  return 0; // Return 0 if lastTimestamp is null
+};
+
+const animate = (timestamp: number) => {
+  const deltaTime = updateDeltaTime(timestamp); // Calculate delta time
+  incrementCounter(deltaTime); // Update counter based on time passed
   requestAnimationFrame(animate); // Request the next frame
 };
 
