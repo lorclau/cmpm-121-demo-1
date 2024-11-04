@@ -9,9 +9,6 @@ const header = document.createElement("h1");
 header.innerHTML = gameName;
 app.append(header);
 
-//******************************************************
-//initialization
-
 const PRICE_INCREASE_RATE = 1.15;
 
 let counter: number = 0;
@@ -67,14 +64,9 @@ const availableItems: Item[] = [
 // Track purchase counts for each item
 const upgradeCounts: number[] = new Array(availableItems.length).fill(0);
 
-//******************************************************
-//create elements
-
 // Add increment waffle button
 const waffleButton = document.createElement("button");
-
 waffleButton.textContent = "🧇";
-
 waffleButton.style.cssText = `
   position: absolute;
   top: 20%; 
@@ -91,40 +83,7 @@ waffleButton.style.cssText = `
   justify-content: center; 
   align-items: center;
 `;
-
-// Create a new div element to display the counter
-const counterDiv = document.createElement("div");
-counterDiv.textContent = `${counter} waffles`;
-counterDiv.style.marginTop = "10px";
-counterDiv.style.fontSize = "18px";
-counterDiv.style.textAlign = "center"; // Center text in div
-counterDiv.style.margin = "0 auto"; // Center the counter div
-
-// Create new div to display upgradeCounts and growthRate
-const growthRateDiv = document.createElement("div");
-growthRateDiv.textContent = `Growth Rate: ${growthRate.toFixed(1)} waffles/sec`;
-growthRateDiv.style.fontSize = "18px";
-growthRateDiv.style.textAlign = "center"; // Center text in div
-
-const upgradeCountsDiv = document.createElement("div");
-upgradeCountsDiv.textContent = `Upgrades - Thawing Waffles: ${upgradeCounts[0]}, Irons: ${upgradeCounts[1]}, Factories: ${upgradeCounts[2]}, Sanctuaries: ${upgradeCounts[3]}, Islands: ${upgradeCounts[4]}`;
-upgradeCountsDiv.style.fontSize = "18px";
-upgradeCountsDiv.style.textAlign = "center"; // Center text in div
-
-// Create upgrade buttons dynamically based on available items
-const upgradeButtons: HTMLButtonElement[] = availableItems.map(
-  (item, index) => {
-    const button = document.createElement("button");
-    button.textContent = `Buy ${item.name} (-${item.cost.toFixed(2)} waffles, +${item.rate.toFixed(1)}/sec)`;
-    button.style.margin = "10px auto";
-    button.disabled = true; // Start disabled
-    button.dataset.index = index.toString(); // Store the index for later use
-    return button;
-  },
-);
-
-//******************************************************
-//event handling
+app.append(waffleButton); // Append
 
 // Add an event listener to the waffle button
 waffleButton.addEventListener("click", () => {
@@ -137,7 +96,43 @@ waffleButton.addEventListener("click", () => {
   });
 });
 
-// Add event listeners to the upgrade buttons (A B C)
+// Create a new div element to display the counter
+const counterDiv = document.createElement("div");
+counterDiv.textContent = `${counter} waffles`;
+counterDiv.style.marginTop = "10px";
+counterDiv.style.fontSize = "18px";
+counterDiv.style.textAlign = "center";
+counterDiv.style.margin = "0 auto";
+app.append(counterDiv); // Append
+
+// Create new div to display growthRate
+const growthRateDiv = document.createElement("div");
+growthRateDiv.textContent = `Growth Rate: ${growthRate.toFixed(1)} waffles/sec`;
+growthRateDiv.style.fontSize = "18px";
+growthRateDiv.style.textAlign = "center";
+app.append(growthRateDiv); // Append
+
+// Create a new div to display upgradeCounts
+const upgradeCountsDiv = document.createElement("div");
+upgradeCountsDiv.textContent = `Upgrades - Thawing Waffles: ${upgradeCounts[0]}, Irons: ${upgradeCounts[1]}, Factories: ${upgradeCounts[2]}, Sanctuaries: ${upgradeCounts[3]}, Islands: ${upgradeCounts[4]}`;
+upgradeCountsDiv.style.fontSize = "18px";
+upgradeCountsDiv.style.textAlign = "center";
+app.append(upgradeCountsDiv); //Append
+
+// Create upgrade buttons dynamically based on available items
+const upgradeButtons: HTMLButtonElement[] = availableItems.map(
+  (item, index) => {
+    const button = document.createElement("button");
+    button.textContent = `Buy ${item.name} (-${item.cost.toFixed(2)} waffles, +${item.rate.toFixed(1)}/sec)`;
+    button.style.margin = "10px auto";
+    button.disabled = true; // Start disabled
+    button.dataset.index = index.toString(); // Store the index for later use
+    return button;
+  },
+);
+upgradeButtons.forEach((button) => app.append(button)); // Append
+
+// Add event listeners to the upgrade buttons
 upgradeButtons.forEach((button, index) => {
   button.addEventListener("click", () => {
     const item = availableItems[index];
@@ -154,15 +149,23 @@ upgradeButtons.forEach((button, index) => {
   });
 });
 
-//******************************************************
-// increment over time
+// Display descriptions for each upgrade item
+availableItems.forEach((item) => {
+  const descriptionDiv = document.createElement("div");
+  descriptionDiv.textContent = `${item.name}: ${item.description}`;
+  descriptionDiv.style.fontSize = "12px";
+  descriptionDiv.style.textAlign = "center";
+  app.append(descriptionDiv);
+});
 
 // Increment counter - with requestAnimationFrame
 const incrementCounter = (deltaTime: number) => {
   // Calculate how much to increment based on the delta time and growth rate
-  counter += growthRate * deltaTime; // Increment counter
-  counterDiv.textContent = `${Math.floor(counter)} waffles`; // Update the display
-  growthRateDiv.textContent = `Growth Rate: ${growthRate.toFixed(1)} waffles/sec`; // Update growth rate display
+  counter += growthRate * deltaTime;
+
+  // Update displays
+  counterDiv.textContent = `${Math.floor(counter)} waffles`;
+  growthRateDiv.textContent = `Growth Rate: ${growthRate.toFixed(1)} waffles/sec`;
 
   // Enable or disable the upgrade buttons based on the counter
   upgradeButtons.forEach((button, index) => {
@@ -187,22 +190,3 @@ const animate = (timestamp: number) => {
 
 // Start the animation
 requestAnimationFrame(animate);
-
-//******************************************************
-
-// Append
-app.append(waffleButton);
-app.append(counterDiv);
-app.append(growthRateDiv);
-app.append(upgradeCountsDiv);
-
-upgradeButtons.forEach((button) => app.append(button));
-
-// Display descriptions for each upgrade item
-availableItems.forEach((item) => {
-  const descriptionDiv = document.createElement("div");
-  descriptionDiv.textContent = `${item.name}: ${item.description}`;
-  descriptionDiv.style.fontSize = "12px";
-  descriptionDiv.style.textAlign = "center";
-  app.append(descriptionDiv);
-});
