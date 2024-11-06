@@ -2,12 +2,17 @@ import "./style.css";
 
 const app: HTMLDivElement = document.querySelector("#app")!;
 
+// Add game title
 const gameName = "Waffle Clicker";
 document.title = gameName;
 
+// Display title
 const header = document.createElement("h1");
 header.innerHTML = gameName;
 app.append(header);
+
+// Animate title
+header.classList.add("bounceTitle"); 
 
 const PRICE_INCREASE_RATE = 1.15;
 
@@ -66,23 +71,8 @@ const upgradeCounts: number[] = new Array(availableItems.length).fill(0);
 
 // Add increment waffle button
 const waffleButton = document.createElement("button");
-waffleButton.textContent = "🧇";
-waffleButton.style.cssText = `
-  position: absolute;
-  top: 20%; 
-  left: 20%;
-  transform: translate(-50%, -50%) scale(2);
-  width: 100px;         /* Width of the button */
-  height: 100px;        /* Height of the button */
-  border-radius: 50px;  /* Half of the width/height to make it circular */
-  font-size: 40px;      /* Text size */
-  background-color: #000000;  /* Button color */
-  border: none;         /* Remove default border */
-  cursor: pointer;      /* Pointer cursor on hover */
-  display: flex;        
-  justify-content: center; 
-  align-items: center;
-`;
+waffleButton.innerHTML = `<span class="big-emoji">🧇</span>`;
+waffleButton.id = "click-button";
 app.append(waffleButton); // Append
 
 // Add an event listener to the waffle button
@@ -95,6 +85,11 @@ waffleButton.addEventListener("click", () => {
     button.disabled = counter < availableItems[index].cost;
   });
 });
+
+// Add a separation div
+const buttonDiv = document.createElement("div");
+buttonDiv.id = "button-div";
+app.append(buttonDiv);
 
 // Create a new div element to display the counter
 const counterDiv = document.createElement("div");
@@ -124,7 +119,6 @@ const upgradeButtons: HTMLButtonElement[] = availableItems.map(
   (item, index) => {
     const button = document.createElement("button");
     button.textContent = `Buy ${item.name} (-${item.cost.toFixed(2)} waffles, +${item.rate.toFixed(1)}/sec)`;
-    button.style.margin = "10px auto";
     button.disabled = true; // Start disabled
     button.dataset.index = index.toString(); // Store the index for later use
     return button;

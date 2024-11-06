@@ -32,7 +32,7 @@ body {
 }
 
 h1 {
-  font-size: 3.2em;
+  font-size: 3em;
   line-height: 1.1;
 }
 
@@ -43,23 +43,37 @@ h1 {
   text-align: center;
 }
 
+/* button implimentation inspired by 6YuQing6 on Github*/
 button {
-  border-radius: 8px;
+  border-radius: 16px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
+  margin: 9px;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
   background-color: #1a1a1a;
-  cursor: pointer;
   transition: border-color 0.25s;
+  cursor: pointer;
 }
 button:hover {
   border-color: #646cff;
+  cursor: pointer;
 }
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+#click-button {
+  width: 10em;
+  height: 10em;
+  padding: 0;
+  border-radius: 50%;
+}
+
+.big-emoji {
+  font-size: 5em; /* Customize the size of the emoji */
 }
 
 @media (prefers-color-scheme: light) {
@@ -73,4 +87,36 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+#button-div {
+  margin-bottom: 2rem;
+}
+
+/* title animation inspired by eeg0re and rozy-dixon on Github*/
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0); /* Start and end at the original position */
+  }
+  30% {
+    transform: translateY(-20px); /* Move up 20px at 30% of the duration */
+  }
+  50% {
+    transform: translateY(10px);  /* Move down a little at 50% */
+  }
+  70% {
+    transform: translateY(-5px);  /* Slight upward bounce at 70% */
+  }
+  100% {
+    transform: translateY(0); /* Return to original position at the end */
+  }
+}
+
+.bounceTitle {
+  display: inline-block;
+  animation: bounce 2s ease-in-out infinite; /* Apply bounce animation */
+}
+
+#app h1 {
+  display: block;
 }
