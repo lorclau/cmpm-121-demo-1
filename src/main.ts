@@ -12,7 +12,7 @@ header.innerHTML = gameName;
 app.append(header);
 
 // Animate title
-header.classList.add("bounceTitle"); 
+header.classList.add("bounceTitle");
 
 const PRICE_INCREASE_RATE = 1.15;
 
